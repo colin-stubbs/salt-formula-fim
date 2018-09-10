@@ -1,0 +1,16 @@
+{% import_yaml 'fim/defaults.yaml' as default_settings %}
+
+{% set kernel_map = salt['grains.filter_by']({
+  'default': {
+  },
+}, grain='fim', default='default', merge=salt['pillar.get']('fim:lookup', {}))
+%}
+
+{% do default_settings.fim.lookup.update(kernel_map) %}
+
+{% set fim_settings = salt['pillar.get'](
+    'fim',
+    default=default_settings.fim,
+    merge=True
+  )
+%}
